@@ -14,15 +14,17 @@
         placeholder="Enter email"
         required
       ></b-form-input>
+      <errorr :errors="this.errors.email"/>
     </b-form-group>
 
     <b-form-group id="input-group-2" label="Password:" label-for="input-2" class="form-group">
       <b-form-input
         id="input-2"
-        v-model="form.name"
+        v-model="form.password"
         placeholder="Enter name"
         required
       ></b-form-input>
+      <errorr :errors="this.errors.password"/>
     </b-form-group>
 
     <div class="btn-group-login">
@@ -33,19 +35,33 @@
 </template>
 
 <script>
+import errorr from "./common/errorr";
+import Auth from "../mixins/Auth";
 export default {
   name: 'Login',
+  mixins: [Auth],
+  components: {
+    errorr
+  },
   data() {
     return {
       form: {
         email: '',
-        name: '',
+        password: '',
       },
+      errors: {}
     }
   },
   methods: {
     login () {
-      this.$router.push('/')
+      this.$api.post('login', {email: this.form.email, password: this.form.password})
+        .then(res => {
+          this.checkToken(res)
+          this.$router.push('/')
+        }).catch(rej => {
+          this.errors = rej.errors
+          console.log(rej)
+      })
     }
   }
 }

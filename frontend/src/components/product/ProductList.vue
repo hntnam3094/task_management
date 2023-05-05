@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12 d-flex justify-content-between align-items-center mb-5">
         <div>
-          <h1>Product management</h1>
+          <h1><i class="bi bi-box-seam-fill"></i> Product management</h1>
           <b-breadcrumb :items="breadcrumb"></b-breadcrumb>
         </div>
         <b-button class="btn-sm" variant="primary" style="width: 60px; height: 30px" @click="openFormAdd"><i class="bi bi-plus-lg"></i></b-button>
@@ -23,9 +23,9 @@
           </b-card-text>
 
           <div class="group-button">
-            <b-button class="btn-sm" variant="success" @click="openFormDetail"><i class="bi bi-search"></i></b-button>
+            <b-button class="btn-sm" variant="success" @click="openFormDetail(item.id)"><i class="bi bi-search"></i></b-button>
             <b-button class="btn-sm" variant="warning" @click="openFormEdit(item.id)"><i class="bi bi-pencil-square"></i></b-button>
-            <b-button class="btn-sm" variant="danger"><i class="bi bi-trash-fill"></i></b-button>
+            <b-button class="btn-sm" variant="danger" @click="deleteForm(item.id)"><i class="bi bi-trash-fill"></i></b-button>
           </div>
         </b-card>
       </div>
@@ -36,6 +36,7 @@
 <script>
 import ProductForm from "./ProductForm";
 import ProductDetail from "./ProductDetail";
+import removeDialog from "../common/removeDialog";
 import Base from '../../mixins/Base'
 export default {
   name: "ProductList",
@@ -46,6 +47,7 @@ export default {
       formAdd: ProductForm,
       formEdit: ProductForm,
       formDetail: ProductDetail,
+      formDelete: removeDialog,
       breadcrumb: [
         {
           text: 'Home',

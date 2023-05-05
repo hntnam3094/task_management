@@ -10,15 +10,28 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import vmodal from 'vue-js-modal'
 
+import http from "./axios";
+import store from './store'
 Vue.use(vmodal)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+
+Vue.use({
+  install(Vue) {
+    Vue.prototype.$api = http
+  }
+})
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
+  beforeCreate() {
+    store.dispatch('beforeStoreIsLogged')
+    store.dispatch('beforeStoreUserData')
+  },
   components: { App },
   template: '<App/>'
 })

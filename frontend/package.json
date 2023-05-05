@@ -11,12 +11,15 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.5",
     "bootstrap-vue": "^2.23.1",
+    "dotenv": "^16.0.3",
     "vue": "^2.7.14",
     "vue-js-modal": "^2.0.1",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

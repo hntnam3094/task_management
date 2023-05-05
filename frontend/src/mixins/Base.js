@@ -3,12 +3,16 @@ export default {
     return {
       formAdd: null,
       formEdit: null,
-      formDetail: null
+      formDetail: null,
+      formDelete: null,
+      modalProps: {
+        width: '1000px'
+      }
     }
   },
   methods: {
     openFormAdd () {
-      this.$modal.show(this.formAdd)
+      this.$modal.show(this.formAdd, {}, this.modalProps)
     },
     openFormEdit (id) {
       let propsData = {
@@ -17,13 +21,25 @@ export default {
       if (id) {
         propsData.params.id = id
       }
-      this.$modal.show(this.formEdit, { params: {id: id}})
+      this.$modal.show(this.formEdit, propsData, this.modalProps)
     },
     openFormDetail (id) {
-      this.$modal.show(this.formDetail, { id: id })
+      let propsData = {
+        params: {}
+      }
+      if (id) {
+        propsData.params.id = id
+      }
+      this.$modal.show(this.formDetail, propsData, this.modalProps)
     },
-    delete (id) {
-
+    deleteForm (id) {
+      let propsData = {
+        params: {}
+      }
+      if (id) {
+        propsData.params.id = id
+      }
+      this.$modal.show(this.formDelete, propsData, {width: '400px'})
     }
   }
 }

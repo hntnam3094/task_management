@@ -2,21 +2,21 @@
   <div>
     <b-navbar toggleable="lg" type="light" variant="faded" class="bg-color-new text-white">
       <div class="container">
-        <b-navbar-brand tag="h1" class="mb-0">Management Application</b-navbar-brand>
+        <b-navbar-brand href="/" tag="h1" class="mb-0">Management Application</b-navbar-brand>
         <b-navbar-nav>
-          <b-nav-item href="/store">
+          <b-nav-item v-if="isLogged" href="/store">
             <i class="bi bi-shop"></i> Store
           </b-nav-item>
-          <b-nav-item href="/product">
+          <b-nav-item v-if="isLogged" href="/product">
             <i class="bi bi-box-seam-fill"></i> Product
           </b-nav-item>
           <b-nav-item-dropdown right>
             <template #button-content>
-              User
+              {{ isLogged ? userData.name : `User` }}
             </template>
-            <b-dropdown-item href="/login">Login</b-dropdown-item>
-            <b-dropdown-item href="#"><i class="bi bi-person-circle"></i> Profile</b-dropdown-item>
-            <b-dropdown-item href="#"><i class="bi bi-door-open-fill"></i> Sign Out</b-dropdown-item>
+            <b-dropdown-item v-if="!isLogged" href="/login">Login</b-dropdown-item>
+            <b-dropdown-item v-if="isLogged" href="#"><i class="bi bi-person-circle"></i> Profile</b-dropdown-item>
+            <b-dropdown-item v-if="isLogged" @click="logout"><i class="bi bi-door-open-fill"></i> Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </div>
@@ -25,8 +25,15 @@
 </template>
 
 <script>
+import Auth from "../../mixins/Auth";
 export default {
-  name: "header"
+  name: "header",
+  mixins: [Auth],
+  methods: {
+    logout () {
+      this.resetToken()
+    }
+  }
 }
 </script>
 

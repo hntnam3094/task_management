@@ -6,11 +6,9 @@
 
 <script>
 import testModal from './testModal'
+import store from "../store";
 export default {
   name: "Home",
-  mounted() {
-
-  },
   methods: {
     showModal () {
       this.$modal.show(testModal);
