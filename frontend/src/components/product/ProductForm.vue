@@ -27,7 +27,7 @@
         <div class="col-6">
           <b-form-file v-model="file" class="mt-3" plain></b-form-file>
           <div v-if="file" class="mt-3">Selected file: {{ file ? file.name : '' }}</div>
-          <img v-if="file == null && dataForm.image != ''" :src="getImageUrl(dataForm.image)" style="width: 200px" onerror="this.onerror=null;this.src='https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png';" >
+          <img v-if="file == null && dataForm.image != ''" :src="getImageUrl(dataForm.image)" class="imageCustom"  onerror="this.onerror=null;this.src='https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png';" >
         </div>
       </div>
       <div class="row">
@@ -102,7 +102,7 @@ export default {
     loadDataStore (url) {
       this.$api.get(url)
         .then(response => {
-          let data = response.data
+          let data = response.data.data
           if (data && data.length > 0) {
             data.forEach(item => {
               this.options.push({
@@ -119,7 +119,7 @@ export default {
     loadDataForm () {
       this.$api.get('/get_product_detail/'+this.$attrs.params.id)
         .then(res => {
-          this.dataForm = res.data
+          this.dataForm = res.data.data
         }).catch(rej => {
         console.log(rej)
       })

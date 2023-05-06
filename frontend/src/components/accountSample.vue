@@ -14,7 +14,7 @@
     </div>
     <div v-for="(user, key) in listUser" :key="key" class="row">
       <div class="col-1 text-center">
-        {{ key }}
+        {{ key+1 }}
       </div>
       <div class="col-6 text-center">
         {{ user.email }}

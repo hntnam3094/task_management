@@ -27,7 +27,7 @@
         <div class="col-6">
           <b-form-file v-model="file" class="mt-3" plain></b-form-file>
           <div v-if="file" class="mt-3">Selected file: {{ file ? file.name : '' }}</div>
-          <img v-if="file == null && dataForm.image != ''" :src="getImageUrl(dataForm.image)" style="width: 200px" onerror="this.onerror=null;this.src='https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png';" >
+          <img v-if="file == null && dataForm.image != ''" class="imageCustom" :src="getImageUrl(dataForm.image)" onerror="this.onerror=null;this.src='https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png';" >
         </div>
       </div>
       <div class="row">

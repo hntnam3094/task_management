@@ -36,3 +36,7 @@
 .pagination .page-item {
   cursor: pointer;
 }
+
+.imageCustom {
+  width: 200px; height: 150px; object-fit: cover
+}

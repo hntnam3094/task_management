@@ -10,7 +10,7 @@
       <div class="container">
         <div class="row">
           <div class="col-4">
-            <img class="card-img-top" :src="getImageUrl(dataForm.image)" onerror="this.onerror=null;this.src='https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png';" />
+            <img class="card-img-top imageCustom" :src="getImageUrl(dataForm.image)"  onerror="this.onerror=null;this.src='https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png';" />
           </div>
           <div class="col-8 form-group-app">
             <div class="row">

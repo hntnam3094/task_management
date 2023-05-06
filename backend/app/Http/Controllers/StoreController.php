@@ -47,30 +47,30 @@ class StoreController extends Controller
         ]);
 
         if ($result) {
-            return  response()->json('Success', 200);
+            return  response()->json(['message' => 'Success'], 200);
         }
 
-        return  response()->json('Faild response', 400);
+        return  response()->json(['message' => 'Faild response'], 400);
     }
 
     public function getList ($id, Request $request) {
+        $result = [];
         if ($id) {
             $query = Store::orderBy('created_at', 'desc');
             if ($request->has('search')) {
                 $query->where('name', 'like', '%' . $request->search . '%');
             }
             $result = $query->where('userId', $id)->paginate(8);
-            return $result;
         }
-        return [];
+        return response()->json(['data' => $result]);
     }
 
     public function getListAll ($id, Request $request) {
+        $result = [];
         if ($id) {
             $result = Store::query()->where('userId', $id)->orderBy('created_at', 'desc')->get();
-            return $result;
         }
-        return [];
+        return response()->json(['data' => $result]);
     }
 
     public function delete ($id) {
@@ -79,12 +79,12 @@ class StoreController extends Controller
             if ($data) {
                 $result = Store::query()->where('id', $id)->delete();
                 if ($result) {
-                    return  response()->json('Success', 200);
+                    return  response()->json(['message' => 'Success'], 200);
                 }
             }
         }
 
-        return  response()->json('Faild response', 400);
+        return  response()->json(['message' => 'Faild response'], 400);
     }
 
     public function show ($id) {
@@ -94,7 +94,7 @@ class StoreController extends Controller
                 return  response()->json($data, 200);
             }
         }
-        return  response()->json('Faild response', 400);
+        return  response()->json(['message' => 'Faild response'], 400);
     }
 
     public function edit ($id, Request $request) {
@@ -149,19 +149,11 @@ class StoreController extends Controller
 
                     $dataNew = Store::query()->find($id);
 
-                    return  response()->json($dataNew, 200);
+                    return  response()->json(['data'=>$dataNew], 200);
                 }
             }
 
-            return  response()->json('Faild response', 400);
+            return  response()->json(['message' => 'Faild response'], 400);
         }
-    }
-
-    private function Reponse ($data, $code) {
-        $reponse = [
-            'data' => $data,
-            'code' => $code
-        ];
-        return response()->json($reponse, $code);
     }
 }

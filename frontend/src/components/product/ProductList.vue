@@ -157,7 +157,7 @@ export default {
     loadDataStore (url) {
       this.$api.get(url)
         .then(response => {
-          this.listStore = response.data
+          this.listStore = response.data.data
         })
         .catch(error => {
           console.log(error);
@@ -167,10 +167,10 @@ export default {
       this.loading = true
       this.$api.get(url)
         .then(response => {
-          this.items = response.data.data;
-          this.pagination = response.data;
+          this.items = response.data.data.data;
+          this.pagination = response.data.data;
           this.pages = [];
-          for (let i = 1; i <= response.data.last_page; i++) {
+          for (let i = 1; i <= response.data.data.last_page; i++) {
             this.pages.push(i);
           }
           this.loading = false
