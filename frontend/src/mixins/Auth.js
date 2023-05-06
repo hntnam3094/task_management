@@ -5,7 +5,6 @@ export default {
       return store.state.storeIsLogged
     },
     userData () {
-      console.log(store.state.storeUserData)
       return store.state.storeUserData
     }
   },

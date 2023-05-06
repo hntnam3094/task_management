@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import axios from "../axios";
+import {promise} from "ora";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -41,15 +42,42 @@ export default new Vuex.Store({
     setUserData (context, value) {
       context.commit('checkStoreUserData', value)
     },
-    beforeStoreIsLogged (context) {
+    initBeforRouter (context) {
+      let dataUser = {}
+      let isLogged = false
       let logged = localStorage.getItem('isLogged')
-      context.commit('checkStoreIsLogged', logged != null && logged !== 'false')
-    },
-    beforeStoreUserData (context) {
       let user = localStorage.getItem('user')
       if (user != undefined && user !== '') {
-        context.commit('checkStoreUserData', JSON.parse(user))
+        dataUser = JSON.parse(user)
       }
+      isLogged = logged != null && logged !== 'false'
+      context.commit('checkStoreUserData', dataUser)
+      context.commit('checkStoreIsLogged', isLogged)
+    },
+    initStoreStateBeforeCreate (context) {
+      return new Promise((resolve, reject) => {
+        axios.get('/check-token')
+          .then(response => {
+            let dataUser = {}
+            let isLogged = false
+            if (response.data.code == 200) {
+              let logged = localStorage.getItem('isLogged')
+              let user = localStorage.getItem('user')
+              if (user != undefined && user !== '') {
+                dataUser = JSON.parse(user)
+              }
+              isLogged = logged != null && logged !== 'false'
+            }
+            context.commit('checkStoreUserData', dataUser)
+            context.commit('checkStoreIsLogged', isLogged)
+            resolve(response)
+          })
+          .catch(error => {
+            context.commit('checkStoreUserData', {})
+            context.commit('checkStoreIsLogged', false)
+            reject(error)
+          })
+      })
     }
   }
 })

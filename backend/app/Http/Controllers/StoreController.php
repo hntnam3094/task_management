@@ -20,9 +20,10 @@ class StoreController extends Controller
         $image =  $request->file('image');
         try {
             $request->validate([
-                'title' => 'required|unique:posts|max:255',
-                'body' => 'required',
-                'publish_at' => 'required|nullable|date',
+                'name' => 'required',
+                'description' => 'required',
+                'address' => 'required',
+                'phoneNumber' => 'required'
             ]);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
@@ -34,6 +35,7 @@ class StoreController extends Controller
             $image->storeAs('public/images', $filename);
             $imageUrl = '/storage/images/' . $filename;
         }
+
 
         $result = Store::query()->updateOrInsert([
             'name' => $name,
@@ -53,7 +55,19 @@ class StoreController extends Controller
 
     public function getList ($id, Request $request) {
         if ($id) {
-            $result = Store::query()->where('userId', $id)->paginate();
+            $query = Store::orderBy('created_at', 'desc');
+            if ($request->has('search')) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            }
+            $result = $query->where('userId', $id)->paginate(8);
+            return $result;
+        }
+        return [];
+    }
+
+    public function getListAll ($id, Request $request) {
+        if ($id) {
+            $result = Store::query()->where('userId', $id)->orderBy('created_at', 'desc')->get();
             return $result;
         }
         return [];
@@ -94,15 +108,27 @@ class StoreController extends Controller
                 $userId = $request->get('userId');
                 $image =  $request->file('image');
                 $imageUrl = '';
+                $isNewImage = false;
+                try {
+                    $request->validate([
+                        'name' => 'required',
+                        'description' => 'required',
+                        'address' => 'required',
+                        'phoneNumber' => 'required'
+                    ]);
+                } catch (ValidationException $e) {
+                    return response()->json($e->errors(), 422);
+                }
+
                 if ($image) {
                     $filename = time() . '.' . $image->getClientOriginalExtension();
                     $image->storeAs('public/images', $filename);
                     $imageUrl = '/storage/images/' . $filename;
+                    $isNewImage = true;
+                } else {
+                    $imageUrl = $oldData->image;
                 }
 
-                if (!$name || !$description || !$address || !$phoneNumber || !$userId || !$image) {
-                    return response()->json('Please enter all the information', 400);
-                }
 
                 $result = Store::query()->where('id', $id)->update([
                     'name' => $name,
@@ -114,9 +140,11 @@ class StoreController extends Controller
                 ]);
 
                 if ($result) {
-                    $pathImage = explode('/', $oldData->image);
-                    if ($pathImage && isset($pathImage[3])) {
-                        Storage::delete('public/images/' . $pathImage[3]);
+                    if ($isNewImage) {
+                        $pathImage = explode('/', $oldData->image);
+                        if ($pathImage && isset($pathImage[3])) {
+                            Storage::delete('public/images/' . $pathImage[3]);
+                        }
                     }
 
                     $dataNew = Store::query()->find($id);

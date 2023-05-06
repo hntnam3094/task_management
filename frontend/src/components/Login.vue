@@ -23,6 +23,7 @@
         v-model="form.password"
         placeholder="Enter name"
         required
+        type="password"
       ></b-form-input>
       <errorr :errors="this.errors.password"/>
     </b-form-group>
@@ -30,13 +31,16 @@
     <div class="btn-group-login">
       <b-button @click="login" class="btn-login" type="submit" variant="primary mr-2">Login</b-button>
     </div>
-    <a></a>
+    <div class="text-end" style="margin-top: 100px">
+      <a href="#" @click="openModalAccount">User sample</a>
+    </div>
   </div>
 </template>
 
 <script>
 import errorr from "./common/errorr";
 import Auth from "../mixins/Auth";
+import accountSample from "./accountSample";
 export default {
   name: 'Login',
   mixins: [Auth],
@@ -53,6 +57,9 @@ export default {
     }
   },
   methods: {
+    openModalAccount () {
+      this.$modal.show(accountSample, {}, {height: '600px'})
+    },
     login () {
       this.$api.post('login', {email: this.form.email, password: this.form.password})
         .then(res => {
@@ -84,7 +91,7 @@ export default {
   height: 90%;
   border: 1px solid rgb(204, 204, 204);
   border-radius: 10px;
-  padding: 20px 20px 200px;
+  padding: 20px 20px 0px;
   margin: 0 auto;
 }
 .form-group {

@@ -8,6 +8,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/css/styel.css'
 import vmodal from 'vue-js-modal'
 
 import http from "./axios";
@@ -28,9 +29,8 @@ new Vue({
   el: '#app',
   router,
   store,
-  beforeCreate() {
-    store.dispatch('beforeStoreIsLogged')
-    store.dispatch('beforeStoreUserData')
+  created() {
+    // store.dispatch('initStoreStateBeforeCreate')
   },
   components: { App },
   template: '<App/>'

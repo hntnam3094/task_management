@@ -4,19 +4,20 @@
       <div class="container">
         <b-navbar-brand href="/" tag="h1" class="mb-0">Management Application</b-navbar-brand>
         <b-navbar-nav>
+          <b-nav-item v-if="!isLogged" href="/login">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+          </b-nav-item>
           <b-nav-item v-if="isLogged" href="/store">
             <i class="bi bi-shop"></i> Store
           </b-nav-item>
           <b-nav-item v-if="isLogged" href="/product">
             <i class="bi bi-box-seam-fill"></i> Product
           </b-nav-item>
-          <b-nav-item-dropdown right>
+          <b-nav-item-dropdown v-if="isLogged" right>
             <template #button-content>
               {{ isLogged ? userData.name : `User` }}
             </template>
-            <b-dropdown-item v-if="!isLogged" href="/login">Login</b-dropdown-item>
-            <b-dropdown-item v-if="isLogged" href="#"><i class="bi bi-person-circle"></i> Profile</b-dropdown-item>
-            <b-dropdown-item v-if="isLogged" @click="logout"><i class="bi bi-door-open-fill"></i> Sign Out</b-dropdown-item>
+            <b-dropdown-item  @click="logout"><i class="bi bi-door-open-fill"></i> Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </div>
@@ -39,7 +40,8 @@ export default {
 
 <style scoped>
 .bg-color-new {
-  background-color: #ccc;
+  background-color: cadetblue;
+  color: #ffffff;
 }
 .nav-item {
   list-style: none;

@@ -11,7 +11,7 @@ const router = new Router({
       name: 'Home',
       component: () => import('../components/Home'),
       meta: {
-        auth: false
+        auth: true
       }
     },
     {
@@ -31,6 +31,14 @@ const router = new Router({
       }
     },
     {
+      path: '/store/detail/:id',
+      name: 'Store detail',
+      component: () => import('../components/store/StoreDetail'),
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/product',
       name: 'Product',
       component: () => import('../components/product/ProductList'),
@@ -44,13 +52,14 @@ const router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  store.dispatch('beforeStoreIsLogged')
-  store.dispatch('beforeStoreUserData')
+router.beforeResolve((to, from, next) => {
+  store.dispatch('initBeforRouter')
+  let isLogged = store.state.storeIsLogged
+
   if (to.matched.some(record => record.meta.auth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!store.state.storeIsLogged) {
+    if (!isLogged) {
       next({
         path: '/login',
         query: { redirect: to.fullPath }

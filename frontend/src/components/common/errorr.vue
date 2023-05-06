@@ -9,8 +9,8 @@ export default {
   name: "errorr",
   props: {
     errors: {
-      type: Object,
-      defaults: {}
+      type: Array,
+      defaults: []
     }
   },
   computed: {
