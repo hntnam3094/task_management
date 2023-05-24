@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/tasks/done/{id}', [\App\Http\Controllers\TaskController::class, 'complete']);
-Route::post('/task_child/done/{id}', [\App\Http\Controllers\TaskChildController::class, 'doneStatus']);
-Route::resource('tasks', \App\Http\Controllers\TaskController::class);
-Route::resource('task_child', \App\Http\Controllers\TaskChildController::class);
-Route::resource('task_note', \App\Http\Controllers\TaskNoteController::class);
+
 
 Route::get('/user_list', [\App\Http\Controllers\AuthController::class, 'userList']);
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
@@ -28,6 +24,13 @@ Route::get('/check-token', function () {
 })->middleware('auth:sanctum');
 Route::post('/verifyToken', [\App\Http\Controllers\AuthController::class, 'verifyToken']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/tasks/done/{id}', [\App\Http\Controllers\TaskController::class, 'complete']);
+    Route::post('/task_child/done/{id}', [\App\Http\Controllers\TaskChildController::class, 'doneStatus']);
+    Route::resource('tasks', \App\Http\Controllers\TaskController::class);
+    Route::resource('task_child', \App\Http\Controllers\TaskChildController::class);
+    Route::resource('task_note', \App\Http\Controllers\TaskNoteController::class);
+});
 
 Route::post('/test_sendmail', [\App\Http\Controllers\AuthController::class, 'sendEmailTest']);
 

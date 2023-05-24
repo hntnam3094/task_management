@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use App\Repositories\RepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 abstract class BaseRepository implements RepositoryInterface {
     protected $model;
@@ -19,7 +20,11 @@ abstract class BaseRepository implements RepositoryInterface {
 
     public function getAll()
     {
-        return $this->model->all();
+        $user = Auth::user();
+        if ($user) {
+            return $this->model->where('userId', $user->id)->get();
+        }
+        return [];
     }
 
     public function find($id)

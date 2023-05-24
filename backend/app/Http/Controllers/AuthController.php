@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Jobs\SendMail;
 use App\Models\User;
 use App\Validator\BaseValidator;
 use Illuminate\Support\Facades\Auth;
@@ -9,14 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\Register;
-use App\Notifications\AuthNotification;
 
 class AuthController extends Controller
 {
 
     public function register(RegisterRequest $request)
     {
-
         $request->validated();
 
         $user = User::create([
@@ -26,11 +25,12 @@ class AuthController extends Controller
             'activeToken' => md5($request->email)
         ]);
 
-        $information = [
-          'token' => md5($request->email)
+        $data = [
+          'url' => env('FE_URL') . '/verify?token=' . md5($request->email)
         ];
 
-        $user->notify(new AuthNotification($information));
+        SendMail::dispatch('verify', $data, $user);
+
         // Tạo token Sanctum cho user đăng ký
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -45,9 +45,12 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials) && Auth::user()->status == 1) {
-            $token = $request->user()->createToken('auth_token')->plainTextToken;
-            return response()->json(['token' => $token, 'user' => $request->user()]);
+        if (Auth::attempt($credentials)) {
+            if ( Auth::user()->status == 1) {
+                $token = $request->user()->createToken('auth_token')->plainTextToken;
+                return response()->json(['token' => $token, 'user' => $request->user()]);
+            }
+            return response()->json(['error' => ['err' => 'Please, Verify your email before login'], 'code' => 422], 422);
         }
 
         return response()->json(['error' => 'Unauthorized', 'code' => 401], 401);

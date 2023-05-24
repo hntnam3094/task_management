@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\TaskRequest;
+use App\Jobs\SendMail;
 use App\Repositories\Task\TaskRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -116,6 +118,13 @@ class TaskController extends Controller
     }
 
     public function complete($id) {
+        $user = Auth::user();
+        $message = [
+            'type' => 'Create task',
+            'task' => 'Test send mail',
+            'content' => 'has been created!',
+        ];
+        SendMail::dispatch('complete_task',$message, $user);
         return $this->repository->complete($id);
     }
 }

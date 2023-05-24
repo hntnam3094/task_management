@@ -14,7 +14,7 @@
         placeholder="Enter email"
         required
       ></b-form-input>
-      <errorr :errors="this.errors.email"/>
+      <errorr :errors="errors.email"/>
     </b-form-group>
 
     <b-form-group id="input-group-2" label="Password:" label-for="input-2" class="form-group">
@@ -25,14 +25,15 @@
         required
         type="password"
       ></b-form-input>
-      <errorr :errors="this.errors.password"/>
+      <errorr :errors="errors.password"/>
     </b-form-group>
 
-    <div class="btn-group-login">
-      <b-button @click="login" class="btn-login" type="submit" variant="primary mr-2">Login</b-button>
-    </div>
-    <div class="text-end" style="margin-top: 100px">
-      <a href="#" @click="openModalAccount">User sample</a>
+    <div class="btn-group-login mb-5">
+      <b-button @click="login" :disabled="loading" class="btn-login" type="submit" variant="success m-2">Login</b-button>.
+      <div>
+        <router-link to="/register">Register</router-link> <br>
+        <router-link to="/forget-password">Forget password</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -53,21 +54,21 @@ export default {
         email: '',
         password: '',
       },
-      errors: {}
+      errors: {},
+      loading: false
     }
   },
   methods: {
-    openModalAccount () {
-      this.$modal.show(accountSample, {}, {height: '600px'})
-    },
     login () {
-      this.$api.post('login', {email: this.form.email, password: this.form.password})
+      this.loading = true
+      this.$api.post('login', this.form)
         .then(res => {
           this.checkToken(res)
           this.$router.push('/')
+          this.loading = false
         }).catch(rej => {
           this.errors = rej.errors
-          console.log(rej)
+          this.loading = false
       })
     }
   }

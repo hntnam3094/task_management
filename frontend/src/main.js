@@ -13,7 +13,7 @@ import vmodal from 'vue-js-modal'
 
 import http from "./axios";
 import store from './store'
-Vue.use(vmodal)
+Vue.use(vmodal, {dialog: true})
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 

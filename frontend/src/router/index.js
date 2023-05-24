@@ -28,6 +28,11 @@ const router = new Router({
       }
     },
     {
+      path: '/register',
+      name: 'Register',
+      component: () => import('../components/Register'),
+    },
+    {
       path: '/task',
       name: 'Task',
       component: () => import('../components/Task/TaskList'),
