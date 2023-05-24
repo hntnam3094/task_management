@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Store extends Model
+class Note extends Model
 {
     use HasFactory;
 
-
-    protected $table = 'store';
+    protected $table = 'task_note';
     protected $primaryKey = 'id';
-    protected $fillable = ['name', 'description', 'image', 'address', 'phoneNumber', 'userId'];
+    protected $fillable = ['id', 'taskId', 'content', 'status'];
+    protected $user;
 }

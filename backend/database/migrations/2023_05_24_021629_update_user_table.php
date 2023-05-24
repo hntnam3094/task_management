@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTableProduct extends Migration
+class UpdateUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class UpdateTableProduct extends Migration
      */
     public function up()
     {
-        Schema::table('product', function($table) {
-            $table->integer('userId');
+        Schema::table('users', function (Blueprint $table) {
+            $table->tinyInteger('status')->default(0);
+            $table->string('activeToken');
         });
     }
 
@@ -25,8 +26,9 @@ class UpdateTableProduct extends Migration
      */
     public function down()
     {
-        Schema::table('product', function($table) {
-            $table->dropColumn('paid');
+        Schema::table('users', function($table) {
+            $table->dropColumn('status');
+            $table->dropColumn('activeToken');
         });
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoreTable extends Migration
+class CreateTaskChildrenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateStoreTable extends Migration
      */
     public function up()
     {
-        Schema::create('store', function (Blueprint $table) {
+        Schema::create('task_children', function (Blueprint $table) {
             $table->id();
+            $table->integer('taskId');
             $table->string('name');
-            $table->string('description');
-            $table->string('image');
-            $table->string('address');
-            $table->string('phoneNumber');
-            $table->integer('userId');
+            $table->text('description')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->date('startDate')->nullable();
+            $table->date('endDate')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateStoreTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('store');
+        Schema::dropIfExists('task_children');
     }
 }

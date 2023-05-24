@@ -12,9 +12,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\Auth\VerificationController@verify')
+    ->name('verification.verify')
+    ->middleware(['signed', 'throttle:6,1']);
+
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', ['name' => 'Thanh Nam']);
 });
 
 Auth::routes();

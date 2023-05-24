@@ -29,9 +29,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  created() {
-    // store.dispatch('initStoreStateBeforeCreate')
-  },
   components: { App },
   template: '<App/>'
 })

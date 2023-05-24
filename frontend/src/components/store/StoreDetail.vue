@@ -87,11 +87,11 @@ export default {
       breadcrumb: [
         {
           text: 'Home',
-          href: '/'
+          to: '/'
         },
         {
           text: 'Store management',
-          href: '/store'
+          to: '/store'
         },
         {
           text: 'Store detail'

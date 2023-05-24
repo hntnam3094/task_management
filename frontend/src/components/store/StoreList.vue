@@ -38,7 +38,7 @@
             </b-card-text>
 
             <div class="group-button">
-              <b-button class="btn-sm" variant="success" :href="`/store/detail/${item.id}`"><i class="bi bi-search"></i></b-button>
+              <b-button class="btn-sm" variant="success" :to="`/store/detail/${item.id}`"><i class="bi bi-search"></i></b-button>
               <b-button class="btn-sm" variant="warning" @click="openFormEdit(item.id)"><i class="bi bi-pencil-square"></i></b-button>
               <b-button class="btn-sm" variant="danger" @click="deleteForm(item.id)"><i class="bi bi-trash-fill"></i></b-button>
             </div>
@@ -95,7 +95,7 @@ export default {
       breadcrumb: [
         {
           text: 'Home',
-          href: '/'
+          to: '/'
         },
         {
           text: 'Store management'

@@ -23,6 +23,13 @@
         password
       </div>
     </div>
+    <div v-if="loading" class="row">
+      <b-skeleton-table
+        :rows="5"
+        :columns="4"
+        :table-props="{ bordered: true, striped: true }"
+      ></b-skeleton-table>
+    </div>
   </div>
 </template>
 
@@ -31,7 +38,8 @@ export default {
   name: "accountSample",
   data () {
     return {
-      listUser: []
+      listUser: [],
+      loading: false
     }
   },
   mounted() {
@@ -39,10 +47,13 @@ export default {
   },
   methods: {
     getListUser () {
+      this.loading = true
       this.$api.get('/user_list')
         .then(res => {
           this.listUser = res.data
+          this.loading = false
         }).catch(rej => {
+        this.loading = false
         console.log(rej)
       })
     }

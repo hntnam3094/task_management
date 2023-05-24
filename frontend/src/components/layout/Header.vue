@@ -4,13 +4,13 @@
       <div class="container">
         <b-navbar-brand href="/" tag="h1" class="mb-0">Management Application</b-navbar-brand>
         <b-navbar-nav>
-          <b-nav-item v-if="!isLogged" href="/login">
+          <b-nav-item v-if="!isLogged" to="/login">
             <i class="bi bi-box-arrow-in-right"></i> Login
           </b-nav-item>
-          <b-nav-item v-if="isLogged" href="/store">
+          <b-nav-item v-if="isLogged" to="/store">
             <i class="bi bi-shop"></i> Store
           </b-nav-item>
-          <b-nav-item v-if="isLogged" href="/product">
+          <b-nav-item v-if="isLogged" to="/product">
             <i class="bi bi-box-seam-fill"></i> Product
           </b-nav-item>
           <b-nav-item-dropdown v-if="isLogged" right>

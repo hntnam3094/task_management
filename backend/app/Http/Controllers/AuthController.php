@@ -1,12 +1,42 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use App\Validator\BaseValidator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\Register;
+use App\Notifications\AuthNotification;
 
 class AuthController extends Controller
 {
+
+    public function register(RegisterRequest $request)
+    {
+
+        $request->validated();
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'activeToken' => md5($request->email)
+        ]);
+
+        $information = [
+          'token' => md5($request->email)
+        ];
+
+        $user->notify(new AuthNotification($information));
+        // Tạo token Sanctum cho user đăng ký
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['token' => $token], 201);
+    }
+
     public function login(Request $request)
     {
 
@@ -15,12 +45,12 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials) && Auth::user()->status == 1) {
             $token = $request->user()->createToken('auth_token')->plainTextToken;
             return response()->json(['token' => $token, 'user' => $request->user()]);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['error' => 'Unauthorized', 'code' => 401], 401);
     }
 
     public function logout(Request $request)
@@ -33,5 +63,40 @@ class AuthController extends Controller
     public function userList() {
         $result = User::query()->get();
         return $result;
+    }
+
+    public function verifyToken (Request $request) {
+       $token = $request->token;
+
+       if ($token) {
+           $result = User::query()->where('activeToken', $token)->first();
+
+           if ($result) {
+               $data = [
+                 'status' => 1,
+                 'activeToken' => ''
+               ];
+               $result->update($data);
+               return true;
+           }
+       }
+       return false;
+    }
+
+    public function sendEmailTest()
+    {
+        $email = 'hntnam98@gmail.com'; // Địa chỉ email bạn muốn gửi thử
+
+        $data = [
+            'subject' => 'Test Email',
+            'body' => 'This is a test email.'
+        ];
+
+        Mail::raw($data['body'], function ($message) use ($email, $data) {
+            $message->to($email)
+                ->subject($data['subject']);
+        });
+
+        return response()->json(['message' => 'Test email sent']);
     }
 }

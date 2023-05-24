@@ -1,4 +1,11 @@
+import Auth from "./Auth";
+import errorr from "../components/common/errorr";
+import moment from "moment";
 export default {
+  mixins: [Auth],
+  components: {
+    errorr
+  },
   data () {
     return {
       formAdd: null,
@@ -13,7 +20,22 @@ export default {
       defautlImage: 'https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png'
     }
   },
+  computed: {
+    getUserData () {
+      return this.userData
+    }
+  },
   methods: {
+    dateTimeFormat (dateTime, format = '') {
+      let formatDate = 'DD/MM/YYYY'
+
+      if (format) {
+        formatDate = format
+      }
+
+      return moment(dateTime).format(formatDate)
+
+    },
     getImageUrl (imageUrl) {
       if (imageUrl) {
         return this.baseUrl + imageUrl

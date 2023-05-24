@@ -13,28 +13,22 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/tasks/done/{id}', [\App\Http\Controllers\TaskController::class, 'complete']);
+Route::post('/task_child/done/{id}', [\App\Http\Controllers\TaskChildController::class, 'doneStatus']);
+Route::resource('tasks', \App\Http\Controllers\TaskController::class);
+Route::resource('task_child', \App\Http\Controllers\TaskChildController::class);
+Route::resource('task_note', \App\Http\Controllers\TaskNoteController::class);
 
 Route::get('/user_list', [\App\Http\Controllers\AuthController::class, 'userList']);
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/check-token', function () {
     return response()->json(['message' => 'Token is valid', 'code' => 200]);
 })->middleware('auth:sanctum');
-//Route::post('/create_store', [\App\Http\Controllers\StoreController::class, 'create']);
+Route::post('/verifyToken', [\App\Http\Controllers\AuthController::class, 'verifyToken']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/create_store', [\App\Http\Controllers\StoreController::class, 'create']);
-    Route::get('/get_store/{id}', [\App\Http\Controllers\StoreController::class, 'getList']);
-    Route::get('/get_store_detail/{id}', [\App\Http\Controllers\StoreController::class, 'show']);
-    Route::put('/delete_store/{id}', [\App\Http\Controllers\StoreController::class, 'delete']);
-    Route::post('/edit_store/{id}', [\App\Http\Controllers\StoreController::class, 'edit']);
-    Route::get('/get_store_all/{id}', [\App\Http\Controllers\StoreController::class, 'getListAll']);
 
-    Route::post('/create_product', [\App\Http\Controllers\ProductController::class, 'create']);
-    Route::get('/get_product/{id}', [\App\Http\Controllers\ProductController::class, 'getList']);
-    Route::get('/get_product_by_store_id/{id}', [\App\Http\Controllers\ProductController::class, 'getListByStoreId']);
-    Route::get('/get_product_detail/{id}', [\App\Http\Controllers\ProductController::class, 'show']);
-    Route::put('/delete_product/{id}', [\App\Http\Controllers\ProductController::class, 'delete']);
-    Route::post('/edit_product/{id}', [\App\Http\Controllers\ProductController::class, 'edit']);
-});
+Route::post('/test_sendmail', [\App\Http\Controllers\AuthController::class, 'sendEmailTest']);
+
 

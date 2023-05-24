@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class TaskChilren extends Model
 {
     use HasFactory;
 
-    protected $table = 'product';
+    protected $table = 'task_children';
     protected $primaryKey = 'id';
-    protected $fillable = ['name', 'description', 'image', 'price', 'storeId', 'userId'];
+    protected $fillable = ['id','taskId','name','description','status','startDate','endDate'];
 }

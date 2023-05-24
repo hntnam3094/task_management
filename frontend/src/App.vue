@@ -8,12 +8,16 @@
 </template>
 
 <script>
+import store from "./store";
 import Header from "./components/layout/Header";
 export default {
   name: 'App',
   components: {
     Header
-  }
+  },
+  created() {
+    store.dispatch('initStoreStateBeforeCreate')
+  },
 }
 </script>
 
