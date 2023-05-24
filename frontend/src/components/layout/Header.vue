@@ -7,11 +7,8 @@
           <b-nav-item v-if="!isLogged" to="/login">
             <i class="bi bi-box-arrow-in-right"></i> Login
           </b-nav-item>
-          <b-nav-item v-if="isLogged" to="/store">
-            <i class="bi bi-shop"></i> Store
-          </b-nav-item>
-          <b-nav-item v-if="isLogged" to="/product">
-            <i class="bi bi-box-seam-fill"></i> Product
+          <b-nav-item v-if="isLogged" to="/task">
+            <i class="bi bi-shop"></i> Task management
           </b-nav-item>
           <b-nav-item-dropdown v-if="isLogged" right>
             <template #button-content>

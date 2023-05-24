@@ -28,25 +28,9 @@ const router = new Router({
       }
     },
     {
-      path: '/store',
-      name: 'Store',
-      component: () => import('../components/store/StoreList'),
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: '/store/detail/:id',
-      name: 'Store detail',
-      component: () => import('../components/store/StoreDetail'),
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: '/product',
-      name: 'Product',
-      component: () => import('../components/product/ProductList'),
+      path: '/task',
+      name: 'Task',
+      component: () => import('../components/Task/TaskList'),
       meta: {
         auth: true
       }

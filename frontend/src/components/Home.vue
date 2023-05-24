@@ -1,6 +1,6 @@
 <template>
   <div id="home" class="container-fluid">
-    <task-list />
+    Home
   </div>
 </template>
 
