@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Note extends Model
+class Blog extends Model
 {
     use HasFactory;
 
-    protected $table = 'task_note';
+    protected $table = 'blog';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'taskId', 'content', 'status'];
+    protected $fillable = ['id', 'userId', 'name', 'slug', 'view', 'description', 'content', 'status'];
 }

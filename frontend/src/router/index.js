@@ -10,9 +10,6 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: () => import('../components/Home'),
-      meta: {
-        auth: true
-      }
     },
     {
       path: '/verify',
@@ -56,6 +53,43 @@ const router = new Router({
       }
     },
     {
+      path: '/blog',
+      name: 'Blog',
+      component: () => import('../components/Blog/BlogList'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/blog/add',
+      name: 'BlogAdd',
+      component: () => import('../components/Blog/BlogForm'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/blog/edit/:id',
+      name: 'BlogEdit',
+      component: () => import('../components/Blog/BlogForm'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/blog/detail/:id',
+      name: 'BlogEdit',
+      component: () => import('../components/Blog/BlogDetail'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/blog/:slug',
+      name: 'BlogEdit',
+      component: () => import('../components/Blog/PublicBlogDetail'),
+    },
+    {
       path: "*",
       component: () => import('../components/common/404') }
   ]
@@ -64,7 +98,7 @@ const router = new Router({
 router.beforeResolve((to, from, next) => {
   store.dispatch('initBeforRouter')
   let isLogged = store.state.storeIsLogged
-
+  console.log(isLogged)
   if (!to.meta) {
     next()
   }

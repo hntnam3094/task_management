@@ -1,16 +1,15 @@
 <template>
   <div id="home" class="container-fluid">
-    Home
+    <public-blog-list></public-blog-list>
   </div>
 </template>
 
 <script>
-import store from "../store";
-import TaskList from "./Task/TaskList";
+import PublicBlogList from "./Blog/PublicBlogList";
 export default {
   name: "Home",
   components: {
-    TaskList
+    PublicBlogList
   },
   methods: {
 

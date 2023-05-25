@@ -64,13 +64,31 @@ export default {
       this.$modal.show(this.formDetail, propsData, this.modalProps)
     },
     deleteForm (id) {
-      let propsData = {
-        params: {}
-      }
-      if (id) {
-        propsData.params.id = id
-      }
-      this.$modal.show(this.formDelete, propsData, {width: '400px', height: '150px'})
+      this.$modal.show('dialog', {
+        title: 'Delete',
+        text: 'Are you sure you want to delete this item?',
+        buttons: [
+          {
+            title: 'Yes',
+            handler: () => {
+              this.deleteAction(id)
+            }
+          },
+          {
+            title: 'Close',
+            handler: () => {
+              this.$modal.hide('dialog')
+            }
+          }
+        ]
+      })
+    },
+    deleteAction (id) {},
+    readingTime(content) {
+      const wpm = 200;
+      const words = content.trim().split(/\s+/).length;
+      const time = Math.ceil(words / wpm);
+      return time
     },
     close () {
       this.$modal.hideAll()

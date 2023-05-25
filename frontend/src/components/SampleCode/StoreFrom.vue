@@ -1,68 +1,7 @@
 <template>
   <div class="form-wrap">
     <h1 class="header-form">{{ isEdit ? 'Edit Store' : 'Add Store' }}</h1>
-    <div class="container mt-5 form-group-app">
-      <div class="row">
-        <div class="col-3">
-          Name
-        </div>
-        <div class="col-6">
-          <b-form-input v-model="dataForm.name" placeholder="Enter your store name"></b-form-input>
-          <errorr :errors="errors.name" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          Description
-        </div>
-        <div class="col-6">
-          <b-form-input v-model="dataForm.description" placeholder="Enter your store description"></b-form-input>
-          <errorr :errors="errors.description" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          Image
-        </div>
-        <div class="col-6">
-          <b-form-file v-model="file" class="mt-3" plain></b-form-file>
-          <div v-if="file" class="mt-3">Selected file: {{ file ? file.name : '' }}</div>
-          <img v-if="file == null && dataForm.image != ''" class="imageCustom" :src="getImageUrl(dataForm.image)" onerror="this.onerror=null;this.src='https://www.energyfit.com.mk/wp-content/plugins/ap_background/images/default/default_large.png';" >
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          Address
-        </div>
-        <div class="col-6">
-          <b-form-textarea
-            id="textarea"
-            v-model="dataForm.address"
-            placeholder="Enter your store address"
-            rows="3"
-            max-rows="6"
-          ></b-form-textarea>
-          <errorr :errors="errors.address" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          Phone number
-        </div>
-        <div class="col-6">
-          <b-form-input v-model="dataForm.phoneNumber" placeholder="Enter your store phone number"></b-form-input>
-          <errorr :errors="errors.phoneNumber" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-        </div>
-        <div class="col-6 text-center">
-          <button class="btn btn-success btn-sm m-2" @click="save">Save</button>
-          <button class="btn btn-danger btn-sm m-2" @click="close">Close</button>
-        </div>
-      </div>
-    </div>
+
   </div>
 </template>
 

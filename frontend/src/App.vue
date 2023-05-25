@@ -4,6 +4,7 @@
     <div class="container" style="padding-top: 50px">
       <router-view/>
     </div>
+    <v-dialog />
   </div>
 </template>
 

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Task;
 
+use App\Jobs\SendMail;
 use App\Models\TaskChilren;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\App;
@@ -52,6 +53,18 @@ class TaskRepository extends BaseRepository {
 
         if ($data) {
             $status = $data->status == 1 ? 0 : 1;
+
+            if ($status == 1) {
+                $user = Auth::user();
+                $message = [
+                    'type' => 'Complete task',
+                    'task' => $data->name,
+                    'content' => 'Congratulations, you completed a task for the day! Come back and do more of your planned work',
+                ];
+
+                SendMail::dispatch('complete_task',$message, $user);
+            }
+
             $attr['status'] = $status;
             $data->update($attr);
             return $data;

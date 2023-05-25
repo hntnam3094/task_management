@@ -21,7 +21,7 @@
               </div>
               <div class="col-2" style="align-self: center">
                 <i class="bi bi-check2-circle text-success iconCustom" @click="complete(item.id)"></i>
-                <i class="bi bi-x-circle text-danger iconCustom" @click="deleteTask(item.id)"></i>
+                <i class="bi bi-x-circle text-danger iconCustom" @click="deleteForm(item.id)"></i>
               </div>
             </div>
           </div>
@@ -55,8 +55,8 @@
                 </div>
               </div>
               <div class="col-2" style="align-self: center">
-                <i class="bi bi-check2-circle text-success iconCustom" @click="complete(item.id)"></i>
-                <i class="bi bi-x-circle text-danger iconCustom" @click="deleteTask(item.id)"></i>
+                <i class="bi bi-arrow-clockwise text-danger iconCustom" @click="complete(item.id)"></i>
+                <i class="bi bi-x-circle text-danger iconCustom" @click="deleteForm(item.id)"></i>
               </div>
             </div>
           </div>
@@ -117,10 +117,11 @@ export default {
           this.errors = rej.errors
         })
     },
-    deleteTask (id) {
+    deleteAction (id) {
       this.$api.delete('/tasks/' + id)
         .then(response => {
           this.loadTask()
+          this.$modal.hide('dialog')
         })
         .catch(rej => {
           this.errors = rej.errors

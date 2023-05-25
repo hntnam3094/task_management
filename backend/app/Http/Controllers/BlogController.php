@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Task\TaskRequest;
-use App\Jobs\SendMail;
-use App\Repositories\Task\TaskRepository;
+use App\Http\Requests\Blog\BlogRequest;
+use App\Repositories\Blog\BlogRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller
+class BlogController extends Controller
 {
 
     protected $repository;
 
     public function __construct()
     {
-        $this->repository = new TaskRepository();
+        $this->repository = new BlogRepository();
     }
 
     /**
@@ -25,9 +23,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $result = $this->repository->getAllTaskWithSubTask();
-
-        return response()->json(['items' => $result], 200);
+        return $this->repository->getAllByUserLogged();
     }
 
     /**
@@ -35,9 +31,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(TaskRequest $request)
+    public function create()
     {
-
+        //
     }
 
     /**
@@ -46,18 +42,11 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TaskRequest $request)
+    public function store(BlogRequest $request)
     {
         $request->validated();
 
-        $data = [
-            'userId' => $request->userId,
-            'name' => $request->name,
-            'description' => $request->description,
-            'startDate' => $request->startDate,
-            'endDate' => $request->endDate
-        ];
-        return $this->repository->create($data);
+        return $this->repository->create($request->all());
     }
 
     /**
@@ -68,7 +57,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->getTasknSubTaskByTaskId($id);
+        return $this->repository->find($id);
     }
 
     /**
@@ -77,9 +66,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(BlogRequest $request, $id)
     {
-        //
+
     }
 
     /**
@@ -89,21 +78,11 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TaskRequest $request, $id)
+    public function update(BlogRequest $request, $id)
     {
         $request->validated();
 
-        $data = [
-            'userId' => $request->userId,
-            'name' => $request->name,
-            'description' => $request->description,
-            'status' => $request->status,
-            'startDate' => $request->startDate,
-            'endDate' => $request->endDate
-        ];
-
-        $this->repository->update($id, $data);
-
+        return $this->repository->update($id, $request->all());
     }
 
     /**
@@ -117,7 +96,15 @@ class TaskController extends Controller
         return $this->repository->delete($id);
     }
 
-    public function complete($id) {
-        return $this->repository->complete($id);
+    public function publicBlog () {
+        return $this->repository->getAll();
+    }
+
+    public function publicBlogDetail ($slug) {
+        return $this->repository->getDetailBySlug($slug);
+    }
+
+    public function latestBlog () {
+        return $this->repository->getLatest();
     }
 }
