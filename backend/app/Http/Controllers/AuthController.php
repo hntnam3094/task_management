@@ -14,6 +14,75 @@ use App\Http\Requests\Register;
 class AuthController extends Controller
 {
 
+    public function changePassword (Request $request) {
+        $email = $request->email;
+        $password = $request->password;
+        $password_confirmation = $request->password_confirmation;
+
+        if (!$password || !$password_confirmation) {
+            return response()->json(['message' => 'Please enter password and confirm password', 'code' => 422], 422);
+        }
+
+        if ($password != $password_confirmation) {
+            return response()->json(['message' => 'Confirm password is incorrect', 'code' => 422], 422);
+        }
+
+        $user = User::query()->where('email', $email)->first();
+
+        if ($user) {
+            $data = [
+              'password' => Hash::make($password)
+            ];
+
+            $user->update($data);
+
+            return true;
+        }
+
+        return response()->json(['message' => 'Password change failed, please go through the process again', 'code' => 422], 422);
+    }
+
+    public function reVerify (Request $request) {
+        $email = $request->email;
+
+        $user = User::query()->where('email', $email)->first();
+
+        if ($user) {
+            if ($user->status == 1) {
+                return response()->json(['message' => 'Verified email', 'code' => 422], 422);
+            }
+
+            $data = [
+                'url' => env('FE_URL') . '/verify?token=' . md5($email)
+            ];
+
+            SendMail::dispatch('verify', $data, $user);
+
+            return true;
+        }
+        return response()->json(['message' => 'Email doesn\'t exist', 'code' => 422], 422);
+
+    }
+
+    public function forgetPassword (Request $request) {
+        $email = $request->email;
+
+        $user = User::query()->where('email', $email)->first();
+
+        if ($user) {
+
+            $data = [
+                'url' => env('FE_URL') . '/setup-password?email=' . $email
+            ];
+
+            SendMail::dispatch('forget-password', $data, $user);
+
+            return true;
+        }
+        return response()->json(['message' => 'Email doesn\'t exist', 'code' => 422], 422);
+
+    }
+
     public function register(RegisterRequest $request)
     {
         $request->validated();
@@ -25,13 +94,13 @@ class AuthController extends Controller
             'activeToken' => md5($request->email)
         ]);
 
+        //create verify token
         $data = [
           'url' => env('FE_URL') . '/verify?token=' . md5($request->email)
         ];
 
         SendMail::dispatch('verify', $data, $user);
 
-        // Tạo token Sanctum cho user đăng ký
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json(['token' => $token], 201);
@@ -50,10 +119,10 @@ class AuthController extends Controller
                 $token = $request->user()->createToken('auth_token')->plainTextToken;
                 return response()->json(['token' => $token, 'user' => $request->user()]);
             }
-            return response()->json(['error' => ['err' => 'Please, Verify your email before login'], 'code' => 422], 422);
+            return response()->json(['message' => 'Please, Verify your email before login', 'code' => 422], 422);
         }
 
-        return response()->json(['error' => 'Unauthorized', 'code' => 401], 401);
+        return response()->json(['message' => 'Account password is incorrect', 'code' => 401], 401);
     }
 
     public function logout(Request $request)
@@ -84,22 +153,5 @@ class AuthController extends Controller
            }
        }
        return false;
-    }
-
-    public function sendEmailTest()
-    {
-        $email = 'hntnam98@gmail.com'; // Địa chỉ email bạn muốn gửi thử
-
-        $data = [
-            'subject' => 'Test Email',
-            'body' => 'This is a test email.'
-        ];
-
-        Mail::raw($data['body'], function ($message) use ($email, $data) {
-            $message->to($email)
-                ->subject($data['subject']);
-        });
-
-        return response()->json(['message' => 'Test email sent']);
     }
 }

@@ -67,9 +67,9 @@
 </template>
 
 <script>
-import errorr from "./common/errorr";
-import Auth from "../mixins/Auth";
-import accountSample from "./accountSample";
+import errorr from "../common/errorr";
+import Auth from "../../mixins/Auth";
+import accountSample from "../accountSample";
 export default {
   name: 'Login',
   mixins: [Auth],

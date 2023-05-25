@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\MailForgetPassword;
 use App\Mail\MailNotify;
 use App\Mail\MailVerifyToken;
 use Illuminate\Bus\Queueable;
@@ -44,6 +45,10 @@ class SendMail implements ShouldQueue
 
         if ($this->type == 'complete_task') {
             Mail::to($this->user)->send(new MailNotify($this->data));
+        }
+
+        if ($this->type == 'forget-password') {
+            Mail::to($this->user)->send(new MailForgetPassword($this->data));
         }
 
     }

@@ -20,11 +20,7 @@ abstract class BaseRepository implements RepositoryInterface {
 
     public function getAll()
     {
-        $user = Auth::user();
-        if ($user) {
-            return $this->model->where('userId', $user->id)->get();
-        }
-        return [];
+        return $this->model->all();
     }
 
     public function find($id)

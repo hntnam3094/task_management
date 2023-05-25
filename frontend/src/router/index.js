@@ -17,12 +17,12 @@ const router = new Router({
     {
       path: '/verify',
       name: 'verify',
-      component: () => import('../components/Verify')
+      component: () => import('../components/Auth/Verify')
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('../components/Login'),
+      component: () => import('../components/Auth/Login'),
       meta: {
         login: true
       }
@@ -30,7 +30,22 @@ const router = new Router({
     {
       path: '/register',
       name: 'Register',
-      component: () => import('../components/Register'),
+      component: () => import('../components/Auth/Register'),
+    },
+    {
+      path: '/re-verify',
+      name: 'ReVerify',
+      component: () => import('../components/Auth/ReVerify'),
+    },
+    {
+      path: '/forget-password',
+      name: 'ForgetPassword',
+      component: () => import('../components/Auth/ForgetPassword'),
+    },
+    {
+      path: '/setup-password',
+      name: 'SetupPassword',
+      component: () => import('../components/Auth/SetupPassword'),
     },
     {
       path: '/task',

@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user_list', [\App\Http\Controllers\AuthController::class, 'userList']);
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+Route::post('/re-verify', [\App\Http\Controllers\AuthController::class, 'reVerify']);
+Route::post('/forget-password', [\App\Http\Controllers\AuthController::class, 'forgetPassword']);
+Route::post('/change-password', [\App\Http\Controllers\AuthController::class, 'changePassword']);
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/check-token', function () {
     return response()->json(['message' => 'Token is valid', 'code' => 200]);

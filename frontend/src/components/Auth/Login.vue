@@ -1,6 +1,10 @@
 <template>
   <div class="wrap-login">
     <h1 class="title-login">LOGIN</h1>
+    <div v-if="message" style="font-size: 15px; color: red">
+      {{message}} <br>
+      <router-link to="/re-verify">Click here to confirm email again</router-link>
+    </div>
     <b-form-group
       id="input-group-1"
       label="Email address:"
@@ -39,9 +43,9 @@
 </template>
 
 <script>
-import errorr from "./common/errorr";
-import Auth from "../mixins/Auth";
-import accountSample from "./accountSample";
+import errorr from "../common/errorr";
+import Auth from "../../mixins/Auth";
+import accountSample from "../accountSample";
 export default {
   name: 'Login',
   mixins: [Auth],
@@ -55,7 +59,8 @@ export default {
         password: '',
       },
       errors: {},
-      loading: false
+      loading: false,
+      message: ''
     }
   },
   methods: {
@@ -67,8 +72,13 @@ export default {
           this.$router.push('/')
           this.loading = false
         }).catch(rej => {
+        this.loading = false
+        if (rej.errors) {
           this.errors = rej.errors
-          this.loading = false
+        }
+        if (rej.message) {
+          this.message = rej.message
+        }
       })
     }
   }

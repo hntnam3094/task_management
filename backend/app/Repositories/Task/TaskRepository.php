@@ -5,12 +5,22 @@ namespace App\Repositories\Task;
 use App\Models\TaskChilren;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class TaskRepository extends BaseRepository {
 
     public function getModel()
     {
         return \App\Models\Task::class;
+    }
+
+    public function getAll()
+    {
+        $user = Auth::user();
+        if ($user) {
+            return $this->model->where('userId', $user->id)->get();
+        }
+        return [];
     }
 
     public function getTasknSubTaskByTaskId ($id) {
